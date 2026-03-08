@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SeesamiData Consulting — Unlocking the Value in Your Data</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --cream: #F7F3EE;
+      --dark: #1A1A18;
+      --sage: #7A9E7E;
+      --sage-light: #A8C5AB;
+      --gold: #C4963A;
+      --gold-light: #E8C97A;
+      --warm: #D4C4B0;
+      --text-muted: #6B6560;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--cream);
+      color: var(--dark);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 1.5rem 4rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      mix-blend-mode: normal;
+      background: rgba(247, 243, 238, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(196, 150, 58, 0.15);
+    }
+
+    .nav-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem;
+      font-weight: 400;
+      letter-spacing: 0.05em;
+      color: var(--dark);
+      text-decoration: none;
+    }
+
+    .nav-logo span { color: var(--gold); }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .nav-links a:hover { color: var(--gold); }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-left {
+      padding: 12rem 4rem 6rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-tag {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 2rem;
+      opacity: 0;
+      animation: fadeUp 0.8s ease 0.2s forwards;
+    }
+
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(3.5rem, 6vw, 5.5rem);
+      font-weight: 300;
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      margin-bottom: 2rem;
+      opacity: 0;
+      animation: fadeUp 0.8s ease 0.4s forwards;
+    }
+
+    .hero-title em {
+      font-style: italic;
+      color: var(--gold);
+    }
+
+    .hero-subtitle {
+      font-size: 1.05rem;
+      font-weight: 300;
+      color: var(--text-muted);
+      line-height: 1.7;
+      max-width: 420px;
+      margin-bottom: 3rem;
+      opacity: 0;
+      animation: fadeUp 0.8s ease 0.6s forwards;
+    }
+
+    .hero-cta {
+      display: flex;
+      gap: 1.2rem;
+      align-items: center;
+      opacity: 0;
+      animation: fadeUp 0.8s ease 0.8s forwards;
+    }
+
+    .btn-primary {
+      background: var(--dark);
+      color: var(--cream);
+      padding: 0.85rem 2rem;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-primary::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0;
+      width: 0; height: 2px;
+      background: var(--gold);
+      transition: width 0.3s;
+    }
+
+    .btn-primary:hover::after { width: 100%; }
+    .btn-primary:hover { background: #2D2D2A; }
+
+    .btn-secondary {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: color 0.3s;
+    }
+
+    .btn-secondary:hover { color: var(--gold); }
+    .btn-secondary::after { content: '→'; transition: transform 0.3s; }
+    .btn-secondary:hover::after { transform: translateX(4px); }
+
+    .hero-right {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .hero-visual {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, #E8F0E9 0%, #D4C4B0 50%, #C4963A22 100%);
+    }
+
+    .sesame-art {
+      position: relative;
+      z-index: 2;
+      opacity: 0;
+      animation: fadeIn 1.2s ease 1s forwards;
+    }
+
+    .sesame-art svg {
+      width: 320px;
+      height: 320px;
+    }
+
+    .floating-tags {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    .ftag {
+      position: absolute;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.1em;
+      color: var(--sage);
+      opacity: 0;
+      animation: floatIn 0.6s ease forwards;
+    }
+
+    .ftag:nth-child(1) { top: 20%; left: 10%; animation-delay: 1.2s; }
+    .ftag:nth-child(2) { top: 35%; right: 8%; animation-delay: 1.4s; }
+    .ftag:nth-child(3) { top: 55%; left: 5%; animation-delay: 1.6s; }
+    .ftag:nth-child(4) { top: 70%; right: 12%; animation-delay: 1.8s; }
+    .ftag:nth-child(5) { top: 82%; left: 20%; animation-delay: 2.0s; }
+    .ftag:nth-child(6) { top: 15%; right: 20%; animation-delay: 2.2s; }
+
+    /* ── ABOUT ── */
+    .about {
+      padding: 8rem 4rem;
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 6rem;
+      align-items: start;
+      border-top: 1px solid rgba(196, 150, 58, 0.2);
+    }
+
+    .section-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      padding-top: 0.5rem;
+    }
+
+    .about-content h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 3.5vw, 3rem);
+      font-weight: 300;
+      line-height: 1.2;
+      margin-bottom: 2rem;
+    }
+
+    .about-content h2 em {
+      font-style: italic;
+      color: var(--gold);
+    }
+
+    .about-content p {
+      font-size: 1rem;
+      line-height: 1.8;
+      color: var(--text-muted);
+      margin-bottom: 1.5rem;
+      max-width: 600px;
+    }
+
+    .about-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+      margin-top: 3rem;
+      padding-top: 3rem;
+      border-top: 1px solid var(--warm);
+    }
+
+    .stat-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.8rem;
+      font-weight: 300;
+      color: var(--dark);
+      line-height: 1;
+    }
+
+    .stat-num span { color: var(--gold); font-size: 1.8rem; }
+
+    .stat-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-top: 0.5rem;
+    }
+
+    /* ── SERVICES ── */
+    .services {
+      padding: 8rem 4rem;
+      background: var(--dark);
+      color: var(--cream);
+    }
+
+    .services-header {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 4rem;
+      margin-bottom: 5rem;
+    }
+
+    .services-header h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 3.5vw, 3rem);
+      font-weight: 300;
+      line-height: 1.2;
+      grid-column: 2;
+    }
+
+    .services-header h2 em {
+      font-style: italic;
+      color: var(--gold-light);
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+    }
+
+    .service-card {
+      padding: 3rem 2.5rem;
+      border: 1px solid rgba(255,255,255,0.06);
+      position: relative;
+      overflow: hidden;
+      transition: all 0.4s;
+      cursor: default;
+    }
+
+    .service-card::before {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0;
+      width: 0; height: 2px;
+      background: var(--gold);
+      transition: width 0.4s;
+    }
+
+    .service-card:hover { background: rgba(255,255,255,0.03); }
+    .service-card:hover::before { width: 100%; }
+
+    .service-num {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      color: var(--gold);
+      margin-bottom: 2rem;
+    }
+
+    .service-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.6rem;
+      font-weight: 300;
+      margin-bottom: 1rem;
+      line-height: 1.2;
+    }
+
+    .service-desc {
+      font-size: 0.88rem;
+      line-height: 1.7;
+      color: rgba(247,243,238,0.55);
+    }
+
+    .service-tags {
+      margin-top: 1.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .stag {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.08em;
+      padding: 0.3rem 0.7rem;
+      border: 1px solid rgba(196, 150, 58, 0.3);
+      color: var(--gold-light);
+    }
+
+    /* ── PORTFOLIO ── */
+    .portfolio {
+      padding: 8rem 4rem;
+      border-top: 1px solid rgba(196, 150, 58, 0.2);
+    }
+
+    .portfolio-header {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 4rem;
+      margin-bottom: 5rem;
+      align-items: end;
+    }
+
+    .portfolio-header h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 3.5vw, 3rem);
+      font-weight: 300;
+      line-height: 1.2;
+    }
+
+    .portfolio-header h2 em { font-style: italic; color: var(--gold); }
+
+    .portfolio-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2rem;
+    }
+
+    .project-card {
+      padding: 2.5rem;
+      border: 1px solid var(--warm);
+      position: relative;
+      transition: all 0.3s;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+
+    .project-card:hover {
+      border-color: var(--gold);
+      transform: translateY(-3px);
+      box-shadow: 0 12px 40px rgba(196, 150, 58, 0.1);
+    }
+
+    .project-type {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--sage);
+      margin-bottom: 1rem;
+    }
+
+    .project-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem;
+      font-weight: 400;
+      margin-bottom: 0.8rem;
+      line-height: 1.2;
+    }
+
+    .project-desc {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+    }
+
+    .project-link {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gold);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .project-link::after { content: '→'; }
+
+    /* ── CONTACT ── */
+    .contact {
+      padding: 8rem 4rem;
+      background: linear-gradient(135deg, #1A1A18 0%, #2A2820 100%);
+      color: var(--cream);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6rem;
+      align-items: center;
+    }
+
+    .contact-left h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.5rem, 4vw, 4rem);
+      font-weight: 300;
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
+    }
+
+    .contact-left h2 em { font-style: italic; color: var(--gold-light); }
+
+    .contact-left p {
+      font-size: 1rem;
+      line-height: 1.7;
+      color: rgba(247,243,238,0.6);
+      margin-bottom: 2.5rem;
+    }
+
+    .contact-links {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .contact-link {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      text-decoration: none;
+      color: rgba(247,243,238,0.7);
+      font-size: 0.9rem;
+      transition: color 0.3s;
+      padding: 1rem 0;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .contact-link:hover { color: var(--gold-light); }
+
+    .contact-link-icon {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gold);
+      width: 60px;
+      flex-shrink: 0;
+    }
+
+    .contact-right {
+      padding: 3rem;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .contact-right h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem;
+      font-weight: 300;
+      margin-bottom: 2rem;
+      color: var(--cream);
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: rgba(247,243,238,0.4);
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+
+    .form-input {
+      width: 100%;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: var(--cream);
+      padding: 0.85rem 1rem;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      outline: none;
+      transition: border-color 0.3s;
+    }
+
+    .form-input:focus { border-color: var(--gold); }
+
+    textarea.form-input { resize: vertical; min-height: 100px; }
+
+    .form-submit {
+      width: 100%;
+      background: var(--gold);
+      color: var(--dark);
+      border: none;
+      padding: 1rem;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.3s;
+      margin-top: 0.5rem;
+    }
+
+    .form-submit:hover { background: var(--gold-light); }
+
+    /* ── FOOTER ── */
+    footer {
+      padding: 2rem 4rem;
+      background: var(--dark);
+      border-top: 1px solid rgba(255,255,255,0.06);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    footer p {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.1em;
+      color: rgba(247,243,238,0.3);
+    }
+
+    footer .footer-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1rem;
+      color: rgba(247,243,238,0.5);
+    }
+
+    footer .footer-logo span { color: var(--gold); }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes floatIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 0.7; transform: translateY(0); }
+    }
+
+    /* ── SCROLL REVEAL ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.7s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      nav { padding: 1.2rem 2rem; }
+      .nav-links { display: none; }
+      .hero { grid-template-columns: 1fr; }
+      .hero-right { display: none; }
+      .hero-left { padding: 10rem 2rem 4rem; }
+      .about, .portfolio-header, .services-header { grid-template-columns: 1fr; gap: 2rem; }
+      .about { padding: 4rem 2rem; }
+      .services { padding: 4rem 2rem; }
+      .services-grid { grid-template-columns: 1fr; }
+      .portfolio { padding: 4rem 2rem; }
+      .portfolio-grid { grid-template-columns: 1fr; }
+      .contact { grid-template-columns: 1fr; padding: 4rem 2rem; }
+      footer { padding: 1.5rem 2rem; flex-direction: column; gap: 0.5rem; }
+      .about-stats { grid-template-columns: repeat(2, 1fr); }
+      .services-header h2 { grid-column: 1; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">Seesami<span>Data</span></a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#portfolio">Portfolio</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <p class="hero-tag">Data Science · Bioinformatics · Consulting</p>
+    <h1 class="hero-title">
+      Open<br>
+      <em>Sesame.</em><br>
+      Unlock your data.
+    </h1>
+    <p class="hero-subtitle">
+      SeesamiData Consulting brings PhD-level oncology data science, 
+      real-world evidence expertise, and bioinformatics pipeline engineering 
+      to biopharma and life sciences organisations across Europe.
+    </p>
+    <div class="hero-cta">
+      <a href="#contact" class="btn-primary">Start a conversation</a>
+      <a href="#portfolio" class="btn-secondary">View work</a>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="hero-visual"></div>
+    <div class="sesame-art">
+      <!-- Sesame plant SVG illustration -->
+      <svg viewBox="0 0 320 320" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Stem -->
+        <path d="M160 280 C160 280 158 200 155 160 C152 120 148 80 155 40" 
+              stroke="#7A9E7E" stroke-width="2.5" stroke-linecap="round"/>
+        <!-- Branches -->
+        <path d="M155 160 C130 145 100 140 80 125" stroke="#7A9E7E" stroke-width="1.5" stroke-linecap="round"/>
+        <path d="M157 130 C175 115 195 110 215 98" stroke="#7A9E7E" stroke-width="1.5" stroke-linecap="round"/>
+        <path d="M153 100 C135 88 112 82 95 70" stroke="#7A9E7E" stroke-width="1.5" stroke-linecap="round"/>
+        <path d="M156 75 C170 63 188 58 205 48" stroke="#7A9E7E" stroke-width="1.5" stroke-linecap="round"/>
+        <!-- Seed pods -->
+        <ellipse cx="78" cy="122" rx="12" ry="7" fill="#C4963A" opacity="0.7" transform="rotate(-20 78 122)"/>
+        <ellipse cx="216" cy="96" rx="11" ry="6" fill="#C4963A" opacity="0.8" transform="rotate(15 216 96)"/>
+        <ellipse cx="93" cy="68" rx="10" ry="6" fill="#A8C5AB" opacity="0.9" transform="rotate(-10 93 68)"/>
+        <ellipse cx="206" cy="46" rx="10" ry="6" fill="#C4963A" opacity="0.7" transform="rotate(20 206 46)"/>
+        <ellipse cx="153" cy="38" rx="9" ry="5" fill="#A8C5AB" opacity="0.8" transform="rotate(-5 153 38)"/>
+        <!-- Seeds scattered -->
+        <ellipse cx="70" cy="135" rx="3" ry="2" fill="#C4963A" opacity="0.5" transform="rotate(30 70 135)"/>
+        <ellipse cx="225" cy="108" rx="3" ry="2" fill="#C4963A" opacity="0.5" transform="rotate(-20 225 108)"/>
+        <ellipse cx="85" cy="78" rx="2.5" ry="1.5" fill="#7A9E7E" opacity="0.6" transform="rotate(10 85 78)"/>
+        <ellipse cx="215" cy="58" rx="2.5" ry="1.5" fill="#C4963A" opacity="0.5" transform="rotate(25 215 58)"/>
+        <!-- Small leaves -->
+        <path d="M155 160 C145 150 140 140 148 132 C152 128 158 135 155 160Z" fill="#A8C5AB" opacity="0.6"/>
+        <path d="M157 130 C165 120 170 110 162 104 C158 101 154 108 157 130Z" fill="#7A9E7E" opacity="0.5"/>
+        <path d="M153 100 C143 90 138 80 146 74 C150 71 155 78 153 100Z" fill="#A8C5AB" opacity="0.6"/>
+      </svg>
+    </div>
+    <div class="floating-tags">
+      <span class="ftag">scRNA-seq</span>
+      <span class="ftag">Real-World Evidence</span>
+      <span class="ftag">Nextflow · Docker</span>
+      <span class="ftag">OMOP · EHR</span>
+      <span class="ftag">Oncology · ctDNA</span>
+      <span class="ftag">AWS · Airflow</span>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div class="section-label reveal">About</div>
+  <div class="about-content">
+    <h2 class="reveal">The data logic is <em>universal.</em><br>The domain expertise is rare.</h2>
+    <p class="reveal">SeesamiData Consulting is a boutique data science practice founded by Mai Nguyen — PhD in Integrative Life Sciences, bioinformatician, and former data scientist at BCPlatforms. Based in Helsinki, working across Europe.</p>
+    <p class="reveal">Like the sesame seed — small, ancient, full of hidden value. We specialise in unlocking what's buried in complex biomedical datasets: from liquid biopsy pipelines to real-world evidence for regulatory submissions.</p>
+    <div class="about-stats reveal">
+      <div>
+        <div class="stat-num">10<span>+</span></div>
+        <div class="stat-label">Years experience</div>
+      </div>
+      <div>
+        <div class="stat-num">2</div>
+        <div class="stat-label">Publications</div>
+      </div>
+      <div>
+        <div class="stat-num">PhD</div>
+        <div class="stat-label">Life Sciences</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="services" id="services">
+  <div class="services-header">
+    <div class="section-label reveal" style="color: var(--gold);">Services</div>
+    <h2 class="reveal">What we <em>do</em></h2>
+  </div>
+  <div class="services-grid">
+    <div class="service-card reveal">
+      <div class="service-num">01</div>
+      <div class="service-title">Real-World Evidence & Oncology Data Science</div>
+      <div class="service-desc">Design and implement scalable RWD pipelines for EHR, registry, and claims data. OMOP transformation, data quality frameworks, and statistical analysis for regulatory submissions.</div>
+      <div class="service-tags">
+        <span class="stag">AWS</span>
+        <span class="stag">Airflow</span>
+        <span class="stag">WDL</span>
+        <span class="stag">OMOP</span>
+        <span class="stag">Python</span>
+      </div>
+    </div>
+    <div class="service-card reveal">
+      <div class="service-num">02</div>
+      <div class="service-title">Bioinformatics Pipeline Development</div>
+      <div class="service-desc">End-to-end pipeline engineering for single-cell RNA-seq, multiomics, ctDNA liquid biopsy, CNV detection, and somatic mutation calling across multiple sequencing platforms.</div>
+      <div class="service-tags">
+        <span class="stag">Nextflow</span>
+        <span class="stag">Docker</span>
+        <span class="stag">scRNA-seq</span>
+        <span class="stag">Multiome</span>
+        <span class="stag">ctDNA</span>
+      </div>
+    </div>
+    <div class="service-card reveal">
+      <div class="service-num">03</div>
+      <div class="service-title">Data Strategy & Scientific Consulting</div>
+      <div class="service-desc">Discovery workshops, data maturity assessments, and implementation roadmaps for biopharma and clinical research organisations. Translating scientific challenges into actionable data solutions.</div>
+      <div class="service-tags">
+        <span class="stag">Strategy</span>
+        <span class="stag">Governance</span>
+        <span class="stag">DAMA-DMBOK</span>
+        <span class="stag">Agile</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PORTFOLIO -->
+<section class="portfolio" id="portfolio">
+  <div class="portfolio-header">
+    <div class="section-label reveal">Portfolio</div>
+    <h2 class="reveal">Selected <em>work</em></h2>
+  </div>
+  <div class="portfolio-grid">
+    <a href="https://github.com/maitnnguyen/omics-cancer-analysis" target="_blank" class="project-card reveal">
+      <div class="project-type">Machine Learning · Oncology</div>
+      <div class="project-title">Ovarian Cancer Somatic Mutations — ML Benchmark</div>
+      <div class="project-desc">Platinum chemotherapy response prediction from somatic mutation profiles. End-to-end ML benchmark: Logistic Regression → XGBoost → LightGBM → MLP with SHAP interpretation.</div>
+      <div class="project-link">View on GitHub</div>
+    </a>
+    <a href="https://github.com/maitnnguyen" target="_blank" class="project-card reveal">
+      <div class="project-type">Pipeline Engineering · Liquid Biopsy</div>
+      <div class="project-title">ctDNA Mutation Calling Pipeline</div>
+      <div class="project-desc">Nextflow/Docker pipeline for somatic mutation calling and CNV detection from ctDNA liquid biopsy samples across targeted panels, WGS, and WES.</div>
+      <div class="project-link">View on GitHub</div>
+    </a>
+    <a href="https://dataready.onrender.com" target="_blank" class="project-card reveal">
+      <div class="project-type">AI Tool · Consulting</div>
+      <div class="project-title">DataReady — AI Data Readiness Advisor</div>
+      <div class="project-desc">FastAPI + Groq LLM tool for assessing organisational data readiness for AI/ML projects. Live demo available.</div>
+      <div class="project-link">View live demo</div>
+    </a>
+    <a href="https://github.com/maitnnguyen" target="_blank" class="project-card reveal">
+      <div class="project-type">Single-cell · Multiomics</div>
+      <div class="project-title">scRNA-seq & Multiome Pipelines</div>
+      <div class="project-desc">5' scRNA-seq pipelines using Cell Ranger, STARsolo, Seurat, Scanpy. Multiome workflows integrating RNA with DNA/amplicon modalities across 10x Chromium and PacBio platforms.</div>
+      <div class="project-link">View on GitHub</div>
+    </a>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+  <div class="contact-left reveal">
+    <h2>Let's <em>unlock</em><br>something together.</h2>
+    <p>Available for consulting engagements, freelance projects, and long-term partnerships across Europe. Remote-first.</p>
+    <div class="contact-links">
+      <a href="mailto:maingoc303@gmail.com" class="contact-link">
+        <span class="contact-link-icon">Email</span>
+        maingoc303@gmail.com
+      </a>
+      <a href="https://linkedin.com/in/mai-n-347a1331" target="_blank" class="contact-link">
+        <span class="contact-link-icon">LinkedIn</span>
+        Mai Nguyen
+      </a>
+      <a href="https://github.com/maitnnguyen" target="_blank" class="contact-link">
+        <span class="contact-link-icon">GitHub</span>
+        maitnnguyen
+      </a>
+      <a href="https://dataready.onrender.com" target="_blank" class="contact-link">
+        <span class="contact-link-icon">Demo</span>
+        DataReady Tool
+      </a>
+    </div>
+  </div>
+  <div class="contact-right reveal">
+    <h3>Send a message</h3>
+    <div class="form-group">
+      <label class="form-label">Your name</label>
+      <input type="text" class="form-input" placeholder="Jane Smith">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Email</label>
+      <input type="email" class="form-input" placeholder="jane@company.com">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Message</label>
+      <textarea class="form-input" placeholder="Tell me about your project..."></textarea>
+    </div>
+    <button class="form-submit" onclick="handleSubmit()">Send message →</button>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span class="footer-logo">Seesami<span>Data</span> Consulting</span>
+  <p>© 2026 SeesamiData Consulting · Helsinki, Finland · Remote across Europe</p>
+  <p>Built with 🌱 and open data</p>
+</footer>
+
+<script>
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 80);
+      }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(el => observer.observe(el));
+
+  // Contact form (mailto fallback)
+  function handleSubmit() {
+    const name = document.querySelector('input[type=text]').value;
+    const email = document.querySelector('input[type=email]').value;
+    const msg = document.querySelector('textarea').value;
+    if (!name || !email || !msg) { alert('Please fill in all fields.'); return; }
+    window.location.href = `mailto:maingoc303@gmail.com?subject=Project inquiry from ${name}&body=${encodeURIComponent(msg + '\n\nFrom: ' + name + ' <' + email + '>')}`;
+  }
+</script>
+</body>
+</html>
