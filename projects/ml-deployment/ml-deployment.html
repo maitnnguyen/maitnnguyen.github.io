@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ML Model Deployment — From Training to Production | SeesamiData</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=IBM+Plex+Mono:wght@300;400;500&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0A0E0A;
+      --surface: #111611;
+      --surface2: #161D16;
+      --green: #4ADE80;
+      --green-dim: #1A3A1A;
+      --green-mid: #2D5A2D;
+      --gold: #FBBF24;
+      --blue: #60A5FA;
+      --red: #F87171;
+      --text: #E8F0E8;
+      --muted: #6B7A6B;
+      --border: rgba(74, 222, 128, 0.12);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-weight: 300;
+      overflow-x: hidden;
+      cursor: default;
+    }
+
+    /* ── HEADER ── */
+    header {
+      padding: 2rem 4rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      background: rgba(10, 14, 10, 0.92);
+      backdrop-filter: blur(12px);
+      z-index: 100;
+    }
+
+    .logo {
+      font-family: 'Syne', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--green);
+      text-decoration: none;
+      letter-spacing: 0.05em;
+    }
+
+    .logo span { color: var(--muted); }
+
+    .back-link {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: color 0.3s;
+    }
+
+    .back-link:hover { color: var(--green); }
+    .back-link::before { content: '←'; }
+
+    /* ── HERO ── */
+    .hero {
+      padding: 6rem 4rem 4rem;
+      max-width: 900px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .hero-tag {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--green);
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fadeUp 0.6s ease 0.1s forwards;
+    }
+
+    .hero h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(2.5rem, 5vw, 4.5rem);
+      font-weight: 800;
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fadeUp 0.6s ease 0.2s forwards;
+    }
+
+    .hero h1 span { color: var(--green); }
+
+    .hero p {
+      font-size: 1.1rem;
+      line-height: 1.7;
+      color: var(--muted);
+      max-width: 600px;
+      margin: 0 auto 3rem;
+      opacity: 0;
+      animation: fadeUp 0.6s ease 0.3s forwards;
+    }
+
+    /* ── PIPELINE FLOW ── */
+    .pipeline {
+      padding: 4rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--green);
+      margin-bottom: 3rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    .flow-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .flow-step {
+      display: grid;
+      grid-template-columns: 80px 1fr;
+      gap: 2rem;
+      position: relative;
+      opacity: 0;
+      transform: translateX(-20px);
+      transition: all 0.6s ease;
+    }
+
+    .flow-step.visible {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .step-connector {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0;
+    }
+
+    .step-num {
+      width: 48px;
+      height: 48px;
+      border: 1px solid var(--green);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.8rem;
+      color: var(--green);
+      flex-shrink: 0;
+      background: var(--bg);
+      position: relative;
+      z-index: 1;
+    }
+
+    .step-line {
+      width: 1px;
+      flex: 1;
+      min-height: 40px;
+      background: linear-gradient(to bottom, var(--green), transparent);
+      opacity: 0.3;
+    }
+
+    .step-last .step-line { display: none; }
+
+    .step-content {
+      padding: 0 0 3rem 0;
+    }
+
+    .step-phase {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.5rem;
+    }
+
+    .step-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 0.8rem;
+      color: var(--text);
+    }
+
+    .step-desc {
+      font-size: 0.95rem;
+      line-height: 1.7;
+      color: var(--muted);
+      margin-bottom: 1.2rem;
+      max-width: 600px;
+    }
+
+    .code-block {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--green);
+      padding: 1.2rem 1.5rem;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.78rem;
+      line-height: 1.7;
+      color: #A8C5A8;
+      overflow-x: auto;
+      margin-bottom: 1rem;
+    }
+
+    .code-block .comment { color: var(--muted); }
+    .code-block .keyword { color: var(--blue); }
+    .code-block .string { color: var(--gold); }
+    .code-block .func { color: var(--green); }
+    .code-block .highlight { color: var(--text); }
+
+    .step-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .tag {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.08em;
+      padding: 0.3rem 0.8rem;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      border-radius: 2px;
+    }
+
+    .tag.green { border-color: rgba(74,222,128,0.4); color: var(--green); }
+    .tag.gold { border-color: rgba(251,191,36,0.4); color: var(--gold); }
+    .tag.blue { border-color: rgba(96,165,250,0.4); color: var(--blue); }
+
+    /* ── ARCHITECTURE DIAGRAM ── */
+    .architecture {
+      padding: 4rem;
+      max-width: 1100px;
+      margin: 0 auto;
+      border-top: 1px solid var(--border);
+    }
+
+    .arch-diagram {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 0;
+      align-items: center;
+      margin-top: 3rem;
+      overflow-x: auto;
+    }
+
+    .arch-node {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 1.5rem 1rem;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      position: relative;
+      transition: all 0.3s;
+      cursor: default;
+    }
+
+    .arch-node:hover {
+      border-color: var(--green);
+      background: var(--green-dim);
+    }
+
+    .arch-arrow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--green);
+      font-size: 1.2rem;
+      opacity: 0.4;
+    }
+
+    .arch-icon {
+      font-size: 1.8rem;
+      margin-bottom: 0.3rem;
+    }
+
+    .arch-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--green);
+      text-align: center;
+    }
+
+    .arch-sublabel {
+      font-size: 0.72rem;
+      color: var(--muted);
+      text-align: center;
+      line-height: 1.4;
+    }
+
+    /* ── TOOLS GRID ── */
+    .tools {
+      padding: 4rem;
+      max-width: 1100px;
+      margin: 0 auto;
+      border-top: 1px solid var(--border);
+    }
+
+    .tools-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-top: 3rem;
+    }
+
+    .tool-card {
+      padding: 1.5rem;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      transition: all 0.3s;
+    }
+
+    .tool-card:hover {
+      border-color: var(--green);
+      transform: translateY(-2px);
+    }
+
+    .tool-category {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.8rem;
+    }
+
+    .tool-name {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .tool-desc {
+      font-size: 0.82rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    /* ── DEMO CALLOUT ── */
+    .demo-callout {
+      margin: 4rem;
+      padding: 3rem;
+      border: 1px solid rgba(74,222,128,0.3);
+      background: var(--green-dim);
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 2rem;
+      align-items: center;
+    }
+
+    .demo-callout h3 {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .demo-callout p {
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+
+    .demo-btn {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--bg);
+      background: var(--green);
+      padding: 0.85rem 2rem;
+      text-decoration: none;
+      white-space: nowrap;
+      transition: all 0.3s;
+      display: inline-block;
+    }
+
+    .demo-btn:hover { background: #6EE7A0; }
+
+    /* ── FOOTER ── */
+    footer {
+      padding: 2rem 4rem;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    footer p {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      header { padding: 1.2rem 1.5rem; }
+      .hero { padding: 4rem 1.5rem 2rem; }
+      .pipeline, .architecture, .tools { padding: 2rem 1.5rem; }
+      .demo-callout { margin: 2rem 1.5rem; grid-template-columns: 1fr; }
+      .tools-grid { grid-template-columns: 1fr; }
+      .arch-diagram { grid-template-columns: 1fr; }
+      .arch-arrow { transform: rotate(90deg); }
+      footer { padding: 1.5rem; flex-direction: column; gap: 0.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <a href="https://maitnnguyen.github.io" class="logo">Seesami<span>Data</span></a>
+  <a href="https://maitnnguyen.github.io" class="back-link">Back to portfolio</a>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <p class="hero-tag">MLOps · Model Deployment · Production AI</p>
+  <h1>From Training<br>to <span>Production</span></h1>
+  <p>A practical guide to the full ML lifecycle — training, saving, serving, and monitoring machine learning models in production environments.</p>
+</section>
+
+<!-- PIPELINE STEPS -->
+<section class="pipeline">
+  <div class="section-label">The ML Deployment Pipeline</div>
+
+  <div class="flow-steps">
+
+    <!-- Step 1 -->
+    <div class="flow-step reveal">
+      <div class="step-connector">
+        <div class="step-num">01</div>
+        <div class="step-line"></div>
+      </div>
+      <div class="step-content">
+        <div class="step-phase">Phase 1 — Data</div>
+        <div class="step-title">Data Preparation & Feature Engineering</div>
+        <div class="step-desc">Raw data is collected, cleaned, and transformed into meaningful features. This is the most time-consuming phase — poor data quality here propagates errors through every downstream step.</div>
+        <div class="code-block">
+<span class="comment"># Load and prepare training data</span>
+<span class="keyword">import</span> pandas <span class="keyword">as</span> pd
+<span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> StandardScaler
+
+df = pd.<span class="func">read_csv</span>(<span class="string">'clinical_data.csv'</span>)
+
+<span class="comment"># Feature engineering</span>
+df[<span class="string">'mutation_burden'</span>] = df[<span class="string">'total_mutations'</span>] / df[<span class="string">'genome_size'</span>]
+df[<span class="string">'hrd_positive'</span>] = (df[<span class="string">'hrd_score'</span>] >= 42).<span class="func">astype</span>(<span class="keyword">int</span>)
+
+<span class="comment"># Train/test split</span>
+<span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split
+X_train, X_test, y_train, y_test = <span class="func">train_test_split</span>(
+    df[features], df[<span class="string">'platinum_response'</span>], test_size=<span class="highlight">0.2</span>, random_state=<span class="highlight">42</span>
+)</div>
+        <div class="step-tags">
+          <span class="tag green">pandas</span>
+          <span class="tag green">scikit-learn</span>
+          <span class="tag">EDA</span>
+          <span class="tag">feature engineering</span>
+          <span class="tag gold">data quality</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 2 -->
+    <div class="flow-step reveal">
+      <div class="step-connector">
+        <div class="step-num">02</div>
+        <div class="step-line"></div>
+      </div>
+      <div class="step-content">
+        <div class="step-phase">Phase 2 — Training</div>
+        <div class="step-title">Model Training & Validation</div>
+        <div class="step-desc">Model is trained, hyperparameters tuned via cross-validation, and performance evaluated on held-out test data. SHAP values explain which features drive predictions.</div>
+        <div class="code-block">
+<span class="keyword">from</span> xgboost <span class="keyword">import</span> XGBClassifier
+<span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> cross_val_score
+<span class="keyword">import</span> shap
+
+<span class="comment"># Train XGBoost model</span>
+model = <span class="func">XGBClassifier</span>(
+    n_estimators=<span class="highlight">200</span>,
+    max_depth=<span class="highlight">4</span>,
+    learning_rate=<span class="highlight">0.05</span>,
+    use_label_encoder=<span class="highlight">False</span>
+)
+model.<span class="func">fit</span>(X_train, y_train)
+
+<span class="comment"># Cross-validation</span>
+scores = <span class="func">cross_val_score</span>(model, X_train, y_train, cv=<span class="highlight">5</span>, scoring=<span class="string">'roc_auc'</span>)
+<span class="func">print</span>(<span class="string">f"CV AUC: {scores.mean():.3f} ± {scores.std():.3f}"</span>)
+
+<span class="comment"># SHAP explainability</span>
+explainer = shap.<span class="func">TreeExplainer</span>(model)
+shap_values = explainer.<span class="func">shap_values</span>(X_test)</div>
+        <div class="step-tags">
+          <span class="tag green">XGBoost</span>
+          <span class="tag green">LightGBM</span>
+          <span class="tag green">scikit-learn</span>
+          <span class="tag gold">SHAP</span>
+          <span class="tag blue">cross-validation</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 3 -->
+    <div class="flow-step reveal">
+      <div class="step-connector">
+        <div class="step-num">03</div>
+        <div class="step-line"></div>
+      </div>
+      <div class="step-content">
+        <div class="step-phase">Phase 3 — Serialisation</div>
+        <div class="step-title">Save the Model</div>
+        <div class="step-desc">The trained model is serialised to disk. The model file, preprocessor, and feature schema are versioned together — never save the model alone without its preprocessing pipeline.</div>
+        <div class="code-block">
+<span class="keyword">import</span> joblib
+<span class="keyword">import</span> json
+
+<span class="comment"># Save model + preprocessor as a bundle</span>
+model_bundle = {
+    <span class="string">'model'</span>: model,
+    <span class="string">'scaler'</span>: scaler,
+    <span class="string">'feature_names'</span>: features,
+    <span class="string">'model_version'</span>: <span class="string">'v1.0.0'</span>,
+    <span class="string">'trained_on'</span>: <span class="string">'2026-03-09'</span>
+}
+joblib.<span class="func">dump</span>(model_bundle, <span class="string">'model_bundle.pkl'</span>)
+
+<span class="comment"># Save feature schema for validation</span>
+<span class="keyword">with</span> <span class="func">open</span>(<span class="string">'feature_schema.json'</span>, <span class="string">'w'</span>) <span class="keyword">as</span> f:
+    json.<span class="func">dump</span>({<span class="string">'features'</span>: features, <span class="string">'dtypes'</span>: dtypes}, f)</div>
+        <div class="step-tags">
+          <span class="tag green">joblib</span>
+          <span class="tag">pickle</span>
+          <span class="tag gold">model versioning</span>
+          <span class="tag blue">MLflow</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 4 -->
+    <div class="flow-step reveal">
+      <div class="step-connector">
+        <div class="step-num">04</div>
+        <div class="step-line"></div>
+      </div>
+      <div class="step-content">
+        <div class="step-phase">Phase 4 — Serving</div>
+        <div class="step-title">Build a Prediction API</div>
+        <div class="step-desc">A FastAPI application loads the model bundle and exposes a REST endpoint. Input validation, error handling, and SHAP explanations are built in — the API is the contract between the model and the world.</div>
+        <div class="code-block">
+<span class="keyword">from</span> fastapi <span class="keyword">import</span> FastAPI
+<span class="keyword">from</span> pydantic <span class="keyword">import</span> BaseModel
+<span class="keyword">import</span> joblib, shap, numpy <span class="keyword">as</span> np
+
+app = <span class="func">FastAPI</span>(title=<span class="string">"Platinum Response Predictor"</span>)
+bundle = joblib.<span class="func">load</span>(<span class="string">"model_bundle.pkl"</span>)
+model, scaler = bundle[<span class="string">'model'</span>], bundle[<span class="string">'scaler'</span>]
+
+<span class="keyword">class</span> <span class="highlight">PatientFeatures</span>(BaseModel):
+    tp53_mutated: <span class="keyword">bool</span>
+    brca1_mutated: <span class="keyword">bool</span>
+    hrd_score: <span class="keyword">float</span>
+    tmb: <span class="keyword">float</span>
+    msi_status: <span class="keyword">int</span>
+
+@app.<span class="func">post</span>(<span class="string">"/predict"</span>)
+<span class="keyword">def</span> <span class="func">predict</span>(patient: PatientFeatures):
+    X = scaler.<span class="func">transform</span>([patient.<span class="func">dict</span>().<span class="func">values</span>()])
+    prob = model.<span class="func">predict_proba</span>(X)[<span class="highlight">0</span>][<span class="highlight">1</span>]
+    label = <span class="string">"Sensitive"</span> <span class="keyword">if</span> prob > <span class="highlight">0.5</span> <span class="keyword">else</span> <span class="string">"Resistant"</span>
+    <span class="keyword">return</span> {<span class="string">"prediction"</span>: label, <span class="string">"confidence"</span>: <span class="func">round</span>(prob, <span class="highlight">3</span>)}</div>
+        <div class="step-tags">
+          <span class="tag green">FastAPI</span>
+          <span class="tag green">Pydantic</span>
+          <span class="tag blue">REST API</span>
+          <span class="tag">Docker</span>
+          <span class="tag gold">uvicorn</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 5 -->
+    <div class="flow-step reveal">
+      <div class="step-connector">
+        <div class="step-num">05</div>
+        <div class="step-line"></div>
+      </div>
+      <div class="step-content">
+        <div class="step-phase">Phase 5 — Containerisation</div>
+        <div class="step-title">Dockerise & Deploy</div>
+        <div class="step-desc">The API is containerised with Docker for reproducibility, then deployed to a cloud platform. Render.com, HuggingFace Spaces, and AWS Lambda all support free-tier model serving.</div>
+        <div class="code-block">
+<span class="comment"># Dockerfile</span>
+<span class="keyword">FROM</span> python:<span class="highlight">3.11-slim</span>
+<span class="keyword">WORKDIR</span> /app
+<span class="keyword">COPY</span> requirements.txt .
+<span class="keyword">RUN</span> pip install --no-cache-dir -r requirements.txt
+<span class="keyword">COPY</span> . .
+<span class="keyword">EXPOSE</span> <span class="highlight">8000</span>
+<span class="keyword">CMD</span> [<span class="string">"uvicorn"</span>, <span class="string">"main:app"</span>, <span class="string">"--host"</span>, <span class="string">"0.0.0.0"</span>, <span class="string">"--port"</span>, <span class="string">"8000"</span>]
+
+<span class="comment"># Deploy to Render.com</span>
+<span class="comment"># 1. Push to GitHub</span>
+<span class="comment"># 2. Connect repo in Render dashboard</span>
+<span class="comment"># 3. Set start command → live URL in minutes</span></div>
+        <div class="step-tags">
+          <span class="tag green">Docker</span>
+          <span class="tag blue">Render.com</span>
+          <span class="tag blue">HuggingFace Spaces</span>
+          <span class="tag gold">AWS Lambda</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 6 -->
+    <div class="flow-step reveal step-last">
+      <div class="step-connector">
+        <div class="step-num">06</div>
+        <div class="step-line"></div>
+      </div>
+      <div class="step-content">
+        <div class="step-phase">Phase 6 — Monitoring</div>
+        <div class="step-title">Monitor, Drift Detection & Retrain</div>
+        <div class="step-desc">Models degrade over time as data distributions shift. Logging predictions, tracking performance metrics, and detecting feature drift ensures the model stays reliable in production.</div>
+        <div class="code-block">
+<span class="keyword">from</span> evidently <span class="keyword">import</span> ColumnMapping
+<span class="keyword">from</span> evidently.report <span class="keyword">import</span> Report
+<span class="keyword">from</span> evidently.metric_preset <span class="keyword">import</span> DataDriftPreset
+
+<span class="comment"># Compare reference vs production data distributions</span>
+report = <span class="func">Report</span>(metrics=[<span class="func">DataDriftPreset</span>()])
+report.<span class="func">run</span>(
+    reference_data=reference_df,
+    current_data=production_df
+)
+
+<span class="comment"># Trigger retraining if drift detected</span>
+drift_detected = report.as_dict()[<span class="string">'metrics'</span>][<span class="highlight">0</span>][<span class="string">'result'</span>][<span class="string">'dataset_drift'</span>]
+<span class="keyword">if</span> drift_detected:
+    <span class="func">trigger_retraining_pipeline</span>()</div>
+        <div class="step-tags">
+          <span class="tag green">Evidently</span>
+          <span class="tag gold">MLflow</span>
+          <span class="tag blue">Prometheus</span>
+          <span class="tag">data drift</span>
+          <span class="tag">retraining</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ARCHITECTURE DIAGRAM -->
+<section class="architecture">
+  <div class="section-label">System Architecture</div>
+  <div class="arch-diagram">
+    <div class="arch-node">
+      <div class="arch-icon">🧬</div>
+      <div class="arch-label">Raw Data</div>
+      <div class="arch-sublabel">Clinical / Genomic / Sensor</div>
+    </div>
+    <div class="arch-arrow">→</div>
+    <div class="arch-node">
+      <div class="arch-icon">⚙️</div>
+      <div class="arch-label">ML Pipeline</div>
+      <div class="arch-sublabel">Train · Validate · Save</div>
+    </div>
+    <div class="arch-arrow">→</div>
+    <div class="arch-node">
+      <div class="arch-icon">🚀</div>
+      <div class="arch-label">API Server</div>
+      <div class="arch-sublabel">FastAPI · Docker · Cloud</div>
+    </div>
+    <div class="arch-arrow">→</div>
+    <div class="arch-node">
+      <div class="arch-icon">📊</div>
+      <div class="arch-label">UI / Client</div>
+      <div class="arch-sublabel">Web · Dashboard · App</div>
+    </div>
+    <div class="arch-arrow">→</div>
+    <div class="arch-node">
+      <div class="arch-icon">🔄</div>
+      <div class="arch-label">Monitor</div>
+      <div class="arch-sublabel">Drift · Retrain · Log</div>
+    </div>
+  </div>
+</section>
+
+<!-- TOOLS -->
+<section class="tools">
+  <div class="section-label">Key Tools by Phase</div>
+  <div class="tools-grid">
+    <div class="tool-card reveal">
+      <div class="tool-category">Training</div>
+      <div class="tool-name">scikit-learn / XGBoost</div>
+      <div class="tool-desc">Industry-standard ML frameworks for classification, regression, and ensemble models. XGBoost excels on tabular clinical data.</div>
+    </div>
+    <div class="tool-card reveal">
+      <div class="tool-category">Explainability</div>
+      <div class="tool-name">SHAP</div>
+      <div class="tool-desc">SHapley Additive exPlanations — the gold standard for explaining individual predictions and global feature importance.</div>
+    </div>
+    <div class="tool-card reveal">
+      <div class="tool-category">Versioning</div>
+      <div class="tool-name">MLflow</div>
+      <div class="tool-desc">Track experiments, log metrics, register models, and manage the full model lifecycle across training runs.</div>
+    </div>
+    <div class="tool-card reveal">
+      <div class="tool-category">Serving</div>
+      <div class="tool-name">FastAPI</div>
+      <div class="tool-desc">High-performance Python API framework. Automatic OpenAPI documentation, input validation via Pydantic, async support.</div>
+    </div>
+    <div class="tool-card reveal">
+      <div class="tool-category">Containerisation</div>
+      <div class="tool-name">Docker</div>
+      <div class="tool-desc">Package model + dependencies into a reproducible container. Eliminates "works on my machine" problems in production.</div>
+    </div>
+    <div class="tool-card reveal">
+      <div class="tool-category">Monitoring</div>
+      <div class="tool-name">Evidently AI</div>
+      <div class="tool-desc">Open-source ML monitoring — data drift detection, model performance tracking, and automated reporting.</div>
+    </div>
+  </div>
+</section>
+
+<!-- DEMO CALLOUT -->
+<div class="demo-callout reveal">
+  <div>
+    <h3>See it in action — Platinum Response Predictor</h3>
+    <p>A live XGBoost model predicting platinum chemotherapy response from ovarian cancer somatic mutation profiles. Built using this exact pipeline.</p>
+  </div>
+  <a href="https://dataready.onrender.com" class="demo-btn">View live demo →</a>
+</div>
+
+<footer>
+  <a href="https://maitnnguyen.github.io" style="text-decoration:none;">
+    <span style="font-family:'IBM Plex Mono',monospace; font-size:0.75rem; color:#4ADE80;">SeesamiData Consulting</span>
+  </a>
+  <p>© 2026 · Helsinki, Finland · Remote across Europe</p>
+</footer>
+
+<script>
+  const reveals = document.querySelectorAll('.reveal, .flow-step');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 100);
+      }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
