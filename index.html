@@ -64,7 +64,7 @@
 
     .nav-links a {
       font-family: 'DM Mono', monospace;
-      font-size: 0.72rem;
+      font-size: 0.88rem;
       letter-spacing: 0.12em;
       text-transform: uppercase;
       color: var(--text-muted);
@@ -94,7 +94,7 @@
 
     .hero-tag {
       font-family: 'DM Mono', monospace;
-      font-size: 0.68rem;
+      font-size: 0.88rem;
       letter-spacing: 0.2em;
       text-transform: uppercase;
       color: var(--gold);
@@ -705,6 +705,190 @@
       transform: translateY(0);
     }
 
+    /* ── ACADEMIC ── */
+    .academic {
+      padding: 8rem 4rem;
+      border-top: 1px solid rgba(196, 150, 58, 0.2);
+    }
+
+    .academic-header {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 4rem;
+      margin-bottom: 5rem;
+      align-items: end;
+    }
+
+    .academic-header h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 3.5vw, 3rem);
+      font-weight: 300;
+      line-height: 1.2;
+    }
+
+    .academic-header h2 em { font-style: italic; color: var(--gold); }
+
+    .academic-sub {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1.5rem;
+      margin-top: 3rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid rgba(196,150,58,0.2);
+    }
+
+    .academic-sub:first-of-type { margin-top: 0; }
+
+    .paper-card {
+      padding: 2rem 2.5rem;
+      border: 1px solid var(--warm);
+      margin-bottom: 1.2rem;
+      position: relative;
+      transition: all 0.3s;
+    }
+
+    .paper-card:hover {
+      border-color: var(--gold);
+      box-shadow: 0 8px 30px rgba(196,150,58,0.08);
+    }
+
+    .paper-card::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 3px;
+      background: var(--gold);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .paper-card:hover::before { opacity: 1; }
+
+    .paper-type {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.6rem;
+    }
+
+    .paper-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.25rem;
+      font-weight: 400;
+      line-height: 1.4;
+      margin-bottom: 0.5rem;
+      color: var(--dark);
+    }
+
+    .paper-authors {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      margin-bottom: 1rem;
+      line-height: 1.5;
+    }
+
+    .paper-points {
+      list-style: none;
+      margin-bottom: 1rem;
+    }
+
+    .paper-points li {
+      font-size: 0.88rem;
+      line-height: 1.6;
+      color: var(--text-muted);
+      padding: 0.3rem 0 0.3rem 1.2rem;
+      position: relative;
+    }
+
+    .paper-points li::before {
+      content: '—';
+      position: absolute;
+      left: 0;
+      color: var(--gold);
+    }
+
+    .paper-link {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gold);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: gap 0.2s;
+    }
+
+    .paper-link:hover { gap: 0.7rem; }
+    .paper-link::after { content: '->'; }
+
+    .poster-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.2rem;
+    }
+
+    .poster-card {
+      padding: 1.8rem 2rem;
+      border: 1px solid var(--warm);
+      text-decoration: none;
+      color: inherit;
+      display: block;
+      transition: all 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .poster-card::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0;
+      width: 0; height: 2px;
+      background: var(--gold);
+      transition: width 0.3s;
+    }
+
+    .poster-card:hover { border-color: var(--gold); transform: translateY(-2px); }
+    .poster-card:hover::after { width: 100%; }
+
+    .poster-venue {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.5rem;
+    }
+
+    .poster-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      font-weight: 400;
+      line-height: 1.4;
+      margin-bottom: 0.5rem;
+      color: var(--dark);
+    }
+
+    .poster-meta {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-bottom: 0.8rem;
+    }
+
+    .poster-action {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+
     /* ── RESPONSIVE ── */
     @media (max-width: 900px) {
       nav { padding: 1.2rem 2rem; }
@@ -712,8 +896,10 @@
       .hero { grid-template-columns: 1fr; }
       .hero-right { display: none; }
       .hero-left { padding: 10rem 2rem 4rem; }
-      .about, .portfolio-header, .services-header { grid-template-columns: 1fr; gap: 2rem; }
+      .about, .portfolio-header, .services-header, .academic-header { grid-template-columns: 1fr; gap: 2rem; }
       .about { padding: 4rem 2rem; }
+      .academic { padding: 4rem 2rem; }
+      .poster-grid { grid-template-columns: 1fr; }
       .services { padding: 4rem 2rem; }
       .services-grid { grid-template-columns: 1fr; }
       .portfolio { padding: 4rem 2rem; }
@@ -732,6 +918,7 @@
   <a href="#" class="nav-logo">Seesami<span>Data</span></a>
   <ul class="nav-links">
     <li><a href="#about">About</a></li>
+    <li><a href="#academic">Academic</a></li>
     <li><a href="#services">Services</a></li>
     <li><a href="#portfolio">Portfolio</a></li>
     <li><a href="#contact">Contact</a></li>
@@ -850,7 +1037,7 @@
         <div class="stat-label">Years of experience</div>
       </div>
       <div>
-        <div class="stat-num">3<span>+</span></div>
+        <div class="stat-num">5<span>+</span></div>
         <div class="stat-label">Scientific publications</div>
       </div>
       <div>
@@ -863,6 +1050,73 @@
         <div class="stat-num">∞</div>
         <div class="stat-label">Expert across diverse domains</div>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- ACADEMIC OUTPUTS -->
+<section class="academic" id="academic">
+  <div class="academic-header">
+    <div class="section-label reveal">Academic</div>
+    <h2 class="reveal">Research &amp; <em>publications.</em></h2>
+  </div>
+
+  <div class="academic-sub reveal">Publications</div>
+
+  <div class="paper-card reveal">
+    <div class="paper-type">Preprint · bioRxiv · 2025</div>
+    <div class="paper-title">Multi-Omics Characterization of ctDNA Release Mechanisms in Ovarian Cancer</div>
+    <div class="paper-authors">Nguyen, M.T.N., Oikkonen, J., Li, Y., Afentera, D., Lavikka, K., Marchi, G., Hynninen, J., &amp; Hautaniemi, S.</div>
+    <ul class="paper-points">
+      <li>Abundance of ctDNA is impacted by both tumour proliferation and the tumour microenvironment</li>
+      <li>Advanced cancer patients with negative ctDNA may not benefit from chemotherapy — a clinically actionable insight for treatment stratification</li>
+    </ul>
+    <a href="https://doi.org/10.1101/2025.08.03.668326" target="_blank" class="paper-link">Read on bioRxiv</a>
+  </div>
+
+  <div class="paper-card reveal">
+    <div class="paper-type">Published · Biomedicine &amp; Pharmacotherapy · 2023</div>
+    <div class="paper-title">Circulating Tumor DNA-based Copy-Number Profiles Enable Monitoring Treatment Effects During Therapy in High-Grade Serous Carcinoma</div>
+    <div class="paper-authors">Nguyen, M.T.N., Rajavuori, A., Huhtinen, K., Hietanen, S., Hynninen, J., Oikkonen, J., &amp; Hautaniemi, S.</div>
+    <ul class="paper-points">
+      <li>ctDNA provides a minimally invasive approach to support diagnosis and real-time treatment monitoring</li>
+      <li>ctDNA reflects cancer genomics and captures tumour heterogeneity across tissue compartments</li>
+    </ul>
+    <a href="https://doi.org/10.1016/j.biopha.2023.115630" target="_blank" class="paper-link">Read in Biomedicine &amp; Pharmacotherapy</a>
+  </div>
+
+  <div class="academic-sub reveal">Conference Posters</div>
+
+  <div class="poster-grid">
+    <a href="https://doi.org/10.1158/1538-7445.AM2024-4940" target="_blank" class="poster-card reveal">
+      <div class="poster-venue">AACR Annual Meeting 2024 · San Diego, USA</div>
+      <div class="poster-title">Multi-Omics Characterization of ctDNA Release Mechanisms in Ovarian Cancer</div>
+      <div class="poster-meta">Mai T.N. Nguyen et al.</div>
+      <div class="poster-action">View abstract -></div>
+    </a>
+    <a href="https://www.ohdsi-europe.org/images/symposium-2024/Posters/Nguyen_BCPlatform-OMOPSolution-SurgicalDatabase-IntoEHDEN_poster%20-%20Mai%20Nguyen.pdf" target="_blank" class="poster-card reveal">
+      <div class="poster-venue">OHDSI Europe Symposium 2024</div>
+      <div class="poster-title">BCPlatforms OMOP Solution — Surgical Database Integration into EHDEN</div>
+      <div class="poster-meta">Mai Nguyen · BCPlatforms</div>
+      <div class="poster-action">View poster PDF -></div>
+    </a>
+    <a href="https://www.ohdsi-europe.org/images/symposium-2024/Posters/NguyenLehtonen_BCPlatforms-OMOPOncology-FederateQuery-AnalyticalSolutions_poster%20-%20Mai%20Nguyen.pdf" target="_blank" class="poster-card reveal">
+      <div class="poster-venue">OHDSI Europe Symposium 2024</div>
+      <div class="poster-title">BCPlatforms OMOP Oncology — Federated Query &amp; Analytical Solutions</div>
+      <div class="poster-meta">Nguyen, Lehtonen · BCPlatforms</div>
+      <div class="poster-action">View poster PDF -></div>
+    </a>
+    <div class="poster-card reveal">
+      <div class="poster-venue">Liquid Biopsy EACR · Nov 2024 · Lyon, France</div>
+      <div class="poster-title">Liquid Biopsy in Ovarian Cancer — ctDNA Release Mechanisms</div>
+      <div class="poster-meta">Mai T.N. Nguyen et al.</div>
+      <div class="poster-action" style="color:var(--text-muted)">PDF available on request</div>
+    </div>
+    <div class="poster-card reveal">
+      <div class="poster-venue">FCI Symposium · Sep 2024 · Kuopio, Finland</div>
+      <div class="poster-title">Multi-Omics Characterization of ctDNA in Ovarian Cancer</div>
+      <div class="poster-meta">Mai T.N. Nguyen et al.</div>
+      <div class="poster-action" style="color:var(--text-muted)">PDF available on request</div>
     </div>
   </div>
 </section>
@@ -933,8 +1187,14 @@
     </a>
     <a href="https://dataready.onrender.com" target="_blank" class="project-card reveal">
       <div class="project-type">AI Tool · Consulting</div>
-      <div class="project-title">DataReady — AI Data Readiness Advisor</div>
-      <div class="project-desc">FastAPI + Groq LLM tool for assessing organisational data readiness for AI/ML projects. Live demo available.</div>
+      <div class="project-title">DataReady v2 — AI Data Readiness Advisor</div>
+      <div class="project-desc">FastAPI + Groq Llama 3.3 70b consulting tool. Domain-aware assessment for Biopharma, Healthcare and Finance — with maturity scoring, multi-turn follow-up chat, and 90-day action plan generation.</div>
+      <div class="project-link">View live demo</div>
+    </a>
+    <a href="https://healthcare-api-qbsu.onrender.com" target="_blank" class="project-card reveal">
+      <div class="project-type">MLOps · Healthcare AI</div>
+      <div class="project-title">Healthcare API — Clinical Risk Prediction Platform</div>
+      <div class="project-desc">End-to-end ML platform: FHIR R4 data harmonization pipeline to Gradient Boosting models to FastAPI on Render. Heart disease (AUC 0.971), ICU mortality, and cancer risk prediction.</div>
       <div class="project-link">View live demo</div>
     </a>
     <a href="/projects/ml-deployment/" target="_blank" class="project-card reveal">
@@ -958,9 +1218,9 @@
     <h2>Let's <em>unlock</em><br>something together.</h2>
     <p>Available for consulting engagements, freelance projects, and long-term partnerships across Europe. Remote-first.</p>
     <div class="contact-links">
-      <a href="mailto:maingoc303@gmail.com" class="contact-link">
+      <a href="/cdn-cgi/l/email-protection#f19c90989f969e92c2c1c2b1969c90989ddf929e9c" class="contact-link">
         <span class="contact-link-icon">Email</span>
-        maingoc303@gmail.com
+        <span class="__cf_email__" data-cfemail="dbb6bab2b5bcb4b8e8ebe89bbcb6bab2b7f5b8b4b6">[email&#160;protected]</span>
       </a>
       <a href="https://linkedin.com/in/mai-n-347a1331" target="_blank" class="contact-link">
         <span class="contact-link-icon">LinkedIn</span>
@@ -1005,7 +1265,7 @@
   <p>Built with 🌱 and open data</p>
 </footer>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
   // Scroll reveal
   const reveals = document.querySelectorAll('.reveal');
   const observer = new IntersectionObserver((entries) => {
@@ -1022,8 +1282,8 @@
     const name = document.querySelector('input[type=text]').value;
     const email = document.querySelector('input[type=email]').value;
     const msg = document.querySelector('textarea').value;
-    if (!name || !email || !msg) { alert('Please fill in all fields.'); return; }
-    window.location.href = `mailto:maingoc303@gmail.com?subject=Project inquiry from ${name}&body=${encodeURIComponent(msg + '\n\nFrom: ' + name + ' <' + email + '>')}`;
+    if (!name || !email || !msg) { alert('Please fill in all fields'); return; }
+    window.location.href = 'mailto:maingoc303@gmail.com?subject=SeesamiData Enquiry from ' + encodeURIComponent(name) + '&body=' + encodeURIComponent(msg + '\n\nFrom: ' + email);
   }
 </script>
 </body>
