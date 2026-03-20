@@ -64,7 +64,7 @@
 
     .nav-links a {
       font-family: 'DM Mono', monospace;
-      font-size: 0.88rem;
+      font-size: 1.0rem;
       letter-spacing: 0.12em;
       text-transform: uppercase;
       color: var(--text-muted);
@@ -94,7 +94,7 @@
 
     .hero-tag {
       font-family: 'DM Mono', monospace;
-      font-size: 0.88rem;
+      font-size: 1.0rem;
       letter-spacing: 0.2em;
       text-transform: uppercase;
       color: var(--gold);
@@ -730,7 +730,7 @@
 
     .academic-sub {
       font-family: 'DM Mono', monospace;
-      font-size: 0.62rem;
+      font-size: 0.65rem;
       letter-spacing: 0.2em;
       text-transform: uppercase;
       color: var(--gold);
@@ -741,6 +741,12 @@
     }
 
     .academic-sub:first-of-type { margin-top: 0; }
+
+    .paper-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.2rem;
+    }
 
     .paper-card {
       padding: 2rem 2.5rem;
@@ -830,7 +836,7 @@
 
     .poster-grid {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: repeat(3, 1fr);
       gap: 1.2rem;
     }
 
@@ -883,7 +889,7 @@
 
     .poster-action {
       font-family: 'DM Mono', monospace;
-      font-size: 0.6rem;
+      font-size: 0.7rem;
       letter-spacing: 0.1em;
       text-transform: uppercase;
       color: var(--gold);
@@ -899,6 +905,7 @@
       .about, .portfolio-header, .services-header, .academic-header { grid-template-columns: 1fr; gap: 2rem; }
       .about { padding: 4rem 2rem; }
       .academic { padding: 4rem 2rem; }
+      .paper-grid  { grid-template-columns: 1fr; }
       .poster-grid { grid-template-columns: 1fr; }
       .services { padding: 4rem 2rem; }
       .services-grid { grid-template-columns: 1fr; }
@@ -1062,6 +1069,7 @@
   </div>
 
   <div class="academic-sub reveal">Publications</div>
+  <div class="paper-grid"></div>
 
   <div class="paper-card reveal">
     <div class="paper-type">Preprint · bioRxiv · 2025</div>
